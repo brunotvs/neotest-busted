@@ -41,6 +41,7 @@ describe('Building the test run specification', function()
   it('Returns nothing without a tree', function()
     local spec = adapter.build_spec({
       strategy = 'integrated',
+      ---@diagnostic disable-next-line: assign-type-mismatch
       tree = nil,
     })
     assert.is_nil(spec)
