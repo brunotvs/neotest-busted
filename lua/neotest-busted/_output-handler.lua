@@ -6,7 +6,7 @@ local M = {}
 
 M.NEOTEST_RESULTS_LINE_MARKER = '::NEOTEST_LINE::'
 
-function M:__call(options)
+function M:__call(_options)
   local busted = require('busted')
   local handler = require('busted.outputHandlers.base')()
 

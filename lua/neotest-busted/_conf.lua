@@ -65,8 +65,8 @@ local root
 local bustedrc_event, watch_bustedrc = vim.loop.new_fs_event()
 
 ---Reload the configuration from file after the configuration file has changed.
-local function on_bustedrc_change(_err, fname, status)
-  print(_err, fname, vim.inspect(status))
+local function on_bustedrc_change(err, fname, status)
+  print(err, fname, vim.inspect(status))
   if not status.change then
     return
   end
