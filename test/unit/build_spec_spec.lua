@@ -16,12 +16,13 @@ describe('Building the test run specification', function()
 	---
 	---@param content string   Test file content as a string
 	---@param key     string?  Key into the node tree to get the tree of the test
+	---@param strategy string? Strategy to build spec
 	---@return neotest.RunSpec
-	local function build_spec(content, key)
+	local function build_spec(content, key, strategy)
 		writefile(split(content, '\n'), tempfile, 's')
 		local tree = nio.tests.with_async_context(adapter.discover_positions, tempfile)
 		local args = {
-			stategy = 'integrated',
+			strategy = strategy or 'integrated',
 			tree = key and tree:get_key(key) or tree
 		}
 		return assert(adapter.build_spec(args))
@@ -301,6 +302,32 @@ describe('Building the test run specification', function()
 			table.sort(expected, comp)
 			table.sort(spec,     comp)
 			assert.are.same(expected, spec)
+		end)
+	end)
+	describe('Running with dap strategy', function()
+		it('Builds a dap config', function()
+			local content = 'content'
+			local spec = build_spec(content, nil, 'dap')
+
+			---@type dap.Configuration
+			local expected = {
+				name = 'Neotest Busted Test',
+				type = 'local-lua',
+				request = 'launch',
+				cwd = '${workspaceFolder}',
+				program = {
+					command = 'busted',
+				},
+				args = {
+					'-e',
+					'"require(\'lldebugger\').start()"',
+					'--output',
+					output_handler,
+					'--',
+					tempfile
+				}
+			}
+			assert.are.same(expected, spec.strategy)
 		end)
 	end)
 end)

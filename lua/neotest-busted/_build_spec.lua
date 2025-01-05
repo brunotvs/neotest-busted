@@ -73,9 +73,28 @@ local function build_spec(args)
 	end
 	vim.list_extend(additional_args, roots)
 
+	local strategy_config
+	if args.strategy == 'dap' then
+		---@type dap.Configuration
+		strategy_config = {
+			name = 'Neotest Busted Test',
+			type = 'local-lua',
+			request = 'launch',
+			cwd = '${workspaceFolder}',
+			program = {
+				command = 'busted',
+			},
+			args = vim.list_extend({
+				'-e',
+				'"require(\'lldebugger\').start()"',
+			}, additional_args),
+		}
+	end
+
 	vim.list_extend(command, additional_args)
 	return {
 		command = command,
+		strategy = strategy_config
 	}
 end
 
