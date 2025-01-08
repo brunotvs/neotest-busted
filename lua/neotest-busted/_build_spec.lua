@@ -1,3 +1,5 @@
+---@module 'dap'
+
 local conf = require('neotest-busted._conf')
 
 ---Collects the name of a node and all its ancestors in order from outer-most
