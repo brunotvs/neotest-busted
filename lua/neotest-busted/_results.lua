@@ -153,9 +153,7 @@ end
 return function(_spec, run_result, tree)
   local ok, json = pcall(decode_result_output, run_result.output)
   if not ok then
-    vim.api.nvim_err_writeln(
-      vim.fn.join(vim.fn.readfile(run_result.output), '\n')
-    )
+    vim.notify(vim.inspect(json), vim.log.levels.ERROR)
     return {}
   end
 
