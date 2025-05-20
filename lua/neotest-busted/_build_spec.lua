@@ -95,6 +95,7 @@ local function build_spec(args)
       args = vim.list_extend({
         '-e',
         '"require(\'lldebugger\').start()"',
+        '--no-coverage',
       }, additional_args),
     }
   end
